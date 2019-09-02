@@ -9,6 +9,11 @@ Owl is a python Consul config center for Tornado, Gevent, Flask and AioHTTP. It 
 
 It is originally created by XTQXK <xtqxk.kilroy@gmail.com>.
 
+Installation
+------------
+
+``pip install consul-owl``
+
 ## License
 
 Owl is under Apache 2.0 license. See the [LICENSE](LICENSE) file for details.

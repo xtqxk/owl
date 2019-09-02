@@ -18,7 +18,7 @@ except ImportError:
 version = "0.0.1"
 
 setup(
-    name="owl",
+    name="consul-owl",
     version=version,
     packages=["owl", "owl.aio", "owl.gevent","owl.tornado"],
     author="XTQXK",
