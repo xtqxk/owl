@@ -1,20 +1,17 @@
+#!/usr/bin/env python
 # coding:utf-8
 #
-# Copyright (c) 2013 feilong.me All rights reserved.
+# Copyright (c) 2019 xtqxk All rights reserved.
 #
-# @author: Felinx Lee <felinx.lee@gmail.com>
-# Created on May 4, 2013
+# @author: XTQXK <xtqxk.kilroy@gmail.com>
+# Created on SEP 2, 2019
 #
 
-import distutils.core
-try:
-    import setuptools
-except ImportError:
-    pass
+import setuptools
 
 version = "0.0.1"
 
-distutils.core.setup(
+setuptools.setup(
     name="owl",
     version=version,
     packages=["owl", "owl.aio", "owl.gevent","owl.tornado"],
