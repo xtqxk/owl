@@ -14,6 +14,7 @@ Installation
 
 ``pip install consul-owl``
 
-## License
+License
+------------
 
-Owl is under Apache 2.0 license. See the [LICENSE](LICENSE) file for details.
+Owl is under Apache 2.0 license. See the LICENSE file for details.
