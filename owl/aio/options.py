@@ -15,23 +15,17 @@ class DynamicPatch(Base):
     _loop_ = None
 
     def __init__(self, cfg, consul_host="127.0.0.1", consul_port=8500):
+        super().__init__(cfg,consul_host=consul_host,consul_port=consul_port)
         self._loop_ = asyncio.get_event_loop()
         self._conn_ = consul.aio.Consul(port=consul_port, loop=self._loop_)
-        self.cfg = cfg
-        self._loop_.create_task(self.init())
+        self._loop_.create_task(self.watching)
 
     def start(self):
         self._loop_.run_forever()
         self._loop_.close()
 
     @asyncio.coroutine
-    def init(self):
-        self._type_dict_ = {
-            k: type(v) for k, v in self.cfg.__class__.__dict__.items() if k[:1] != "_"
-        }
-        _, data = yield from self._conn_.kv.get(self.cfg.__base_key__, recurse=True)
-        if isinstance(data, list):
-            self.fill_config(data)
+    def watching(self):
         for key, callback_handler in self.__handers__.items():
             self._loop_.create_task(self.watch(key, callback_handler))
 

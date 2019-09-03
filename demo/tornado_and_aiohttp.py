@@ -54,7 +54,7 @@ def main_tornado():
     application = tornado.web.Application([(r"/", MainHandler)])
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(options.port)
-    loop.start()
+    xcfg.start()
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ except ImportError:
     setuptools = None
     from distutils.core import setup
 
-version = "0.0.1"
+version = "0.0.4"
 
 setup(
     name="consul-owl",
