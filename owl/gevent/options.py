@@ -20,14 +20,11 @@ class DynamicPatch(Base):
     def __init__(self, cfg, consul_host="127.0.0.1", consul_port=8500):
         super().__init__(cfg, consul_host=consul_host, consul_port=consul_port)
         self._conn_ = consul.Consul(port=consul_port, host=consul_host)
-        self.watching()
 
     def start(self):
         pass
 
     def watching(self):
-        # watch_tasks=[spawn(self.watch,key, callback_handler) for key, callback_handler in self.__handers__.items()]
-        # joinall(watch_tasks)
         for key, callback_handler in self.__handers__.items():
             Greenlet.spawn(self.watch, key, callback_handler)
 
@@ -43,6 +40,8 @@ class DynamicPatch(Base):
                         keyType = self._type_dict_[key]
                         if keyType is list or keyType is dict or keyType is bool:
                             v = json.loads(data["Value"])
+                        elif keyType is str:
+                            v = data["Value"].decode()
                         else:
                             v = keyType(data["Value"])
                         if getattr(self.cfg, key) != v:

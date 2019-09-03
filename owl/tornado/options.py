@@ -18,25 +18,11 @@ class DynamicPatch(Base):
         super().__init__(cfg,consul_host=consul_host, consul_port=consul_port)
         self._loop_ = loop
         self._conn_ = Consul(port=consul_port, host=consul_host)
-        self._loop_.add_callback(self.watching)
 
     def start(self):
         self._loop_.start()
 
-    @coroutine
     def watching(self):
-        cfg_items = None
-        if not isinstance(self.cfg,dict):
-            cfg_items = self.cfg.__class__.__dict__.items()
-        else:
-            cfg_items = self.cfg.items()
-        self._type_dict_ = {
-            k: type(v) for k, v in cfg_items if k[:1] != "_"
-        }
-        _, data = yield self._conn_.kv.get(self.cfg.__base_key__, recurse=True)
-        if isinstance(data, list):
-            self.fill_config(data)
-
         for key, callback_handler in self.__handers__.items():
             self._loop_.add_callback(self.watch, key, callback_handler)
 
@@ -53,6 +39,8 @@ class DynamicPatch(Base):
                         keyType = self._type_dict_[key]
                         if keyType is list or keyType is dict or keyType is bool:
                             v = json.loads(data["Value"])
+                        elif keyType is str:
+                            v = data["Value"].decode()
                         else:
                             v = keyType(data["Value"])
                         if getattr(self.cfg, key) != v:

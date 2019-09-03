@@ -1,5 +1,5 @@
 #coding:utf-8
-version = "0.0.3"
+version = "0.0.5"
 import logging
 import json
 import consul
@@ -19,6 +19,10 @@ class Base(object):
         for key in keys:
             if key and key not in self.__handers__:
                 self.__handers__[key] = callback_handler
+        self.watching()
+        
+    def watching(self):
+        pass
 
     def init(self):
         c = consul.Consul(self.consul_host,self.consul_port)
